@@ -98,7 +98,33 @@ def vtoonify(
 
     BASE_URL="https://huggingface.co/PKUWilliamYang/VToonify/resolve/main/models"
 
-    checkpoint_url="{}/vtoonify_d_{}/vtoonify_s_d.pt".format(BASE_URL, style)
+    if style == "caricature1":
+        style = "caricature"
+        ckpt = "vtoonify_s039_d0.5.pt"
+    elif style == "caricature2":
+        style = "caricature"
+        ckpt = "vtoonify_s068_d0.5.pt"
+    elif style == "illustration1":
+        style = "illustration"
+        ckpt = "vtoonify_s004_d_c.pt"
+    elif style == "illustration2":
+        style = "illustration"
+        ckpt = "vtoonify_s009_d_c.pt"
+    elif style == "illustration3":
+        style = "illustration"
+        ckpt = "vtoonify_s043_d_c.pt"
+    elif style == "illustration4":
+        style = "illustration"
+        ckpt = "vtoonify_s054_d_c.pt"
+    elif style == "illustration5":
+        style = "illustration"
+        ckpt = "vtoonify_s086_d_c.pt"
+    else:
+        ckpt = "vtoonify_s_d.pt"
+
+    checkpoint_url="{}/vtoonify_d_{}/{}".format(BASE_URL, style, ckpt)
+
+
     exstyle_url="{}/vtoonify_d_{}/exstyle_code.npy".format(BASE_URL, style)
     encoder_url="{}/encoder.pt".format(BASE_URL)
     faceparsing_url="{}/faceparsing.pth".format(BASE_URL)    
