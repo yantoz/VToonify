@@ -1,17 +1,5 @@
 import os
-#os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 import argparse
-import numpy as np
-import cv2
-import dlib
-import torch
-from torchvision import transforms
-import torch.nn.functional as F
-from tqdm import tqdm
-from model.vtoonify import VToonify
-from model.bisenet.model import BiSeNet
-from model.encoder.align_all_parallel import align_face
-from util import save_image, load_image, visualize, load_psp_standalone, get_video_crop_parameter, tensor2cv2
 
 
 class TestOptions():
@@ -44,7 +32,29 @@ class TestOptions():
         for name, value in sorted(args.items()):
             print('%s: %s' % (str(name), str(value)))
         return self.opt
-    
+
+parser = TestOptions()
+args = parser.parse()
+print('*'*98)
+
+device = "cpu" if args.cpu else "cuda"
+
+if args.cpu:
+    os.environ['CUDA_VISIBLE_DEVICES'] = ""
+
+import numpy as np
+import cv2
+import dlib
+import torch
+from torchvision import transforms
+import torch.nn.functional as F
+from tqdm import tqdm
+from model.vtoonify import VToonify
+from model.bisenet.model import BiSeNet
+from model.encoder.align_all_parallel import align_face
+from util import save_image, load_image, visualize, load_psp_standalone, get_video_crop_parameter, tensor2cv2
+
+
 if __name__ == "__main__":
 
     parser = TestOptions()
@@ -53,7 +63,10 @@ if __name__ == "__main__":
     
     
     device = "cpu" if args.cpu else "cuda"
-    
+
+    if args.cpu:
+        os.environ['CUDA_VISIBLE_DEVICES'] = ""
+     
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.5, 0.5, 0.5],std=[0.5,0.5,0.5]),
